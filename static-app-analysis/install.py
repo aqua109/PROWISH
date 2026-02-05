@@ -8,14 +8,15 @@ import subprocess
 
 def getSub(pic, x, y):
     temp = []
-    for j in range(10):
-        for i in range(90):
+    for j in range(16):
+        for i in range(135):
             temp.append(pic[x+i, y+j])
     return temp
 
 def allGreen(rgbvals):
     for val in rgbvals:
-        if (val != (104, 159, 56, 255)):
+        #print(val)
+        if (val != (168, 199, 250, 255)):
             return False
     return True
 
@@ -23,16 +24,17 @@ def findGreenRectangle(filename):
     img = Image.open(SCREENSHOT_FILENAME)
     pic = img.load()
 
-    for j in range(128):
+    for j in range(150):
         for i in range(8):
-            if allGreen(getSub(pic, i*90, j*10)) and (j*10 > 400): # >400 to mitigate a missing pic in header
-                return (i*90, j*10)
+            if allGreen(getSub(pic, i*135, j*16)):
+                print(i*135, j*16)
+                return (i*135, j*16)
     return False
 
 def screenshot(filename):
-    os.system("adb %s shell screencap -p /storage/emulated/legacy/%s" % (DEVICE, filename))
-    os.system("adb %s pull /storage/emulated/legacy/%s" % (DEVICE, filename))
-    os.system("adb %s shell rm /storage/emulated/legacy/%s" % (DEVICE, filename))
+    os.system("adb %s shell screencap -p /storage/emulated/0/%s" % (DEVICE, filename))
+    os.system("adb %s pull /storage/emulated/0/%s" % (DEVICE, filename))
+    os.system("adb %s shell rm /storage/emulated/0/%s" % (DEVICE, filename))
     return filename
 
 def goBackExitEtc():
@@ -44,7 +46,7 @@ def goBackExitEtc():
 ##########
 
 #### replace with device id. do adb devices to get device IDs.
-ID = '015d21d915641208'
+ID = '7e0227c5'
 DEVICE = '-s ' + ID
 
 WAIT_TIME = 6
@@ -60,13 +62,13 @@ for package in packages2:
     path = './apps/'
 
     if (not os.path.isfile(path + package + '.apk')):
-        print "Installing %s" % package
+        print("Installing %s" % package)
         os.system("adb %s shell am start -a android.intent.action.VIEW -d 'market://details?id=%s'" % (DEVICE, package))
         time.sleep(WAIT_TIME)
 
         coords = findGreenRectangle(screenshot(SCREENSHOT_FILENAME))
         if coords:
-            print 'foundit'
+            print('foundit')
             x, y = coords
             os.system("adb %s shell input tap %s %s" % (DEVICE, x, y))
             time.sleep(WAIT_TIME)
@@ -83,7 +85,7 @@ for package in packages2:
                 time.sleep(WAIT_TIME)
                 continue
         else:
-            print 'did not find it'
+            print('did not find it')
             goBackExitEtc()
             time.sleep(WAIT_TIME)
             continue
