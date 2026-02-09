@@ -39,7 +39,8 @@ def screenshot(filename):
 
 def goBackExitEtc():
     #os.system("adb %s shell input keyevent KEYCODE_BACK" % DEVICE)
-    os.system("adb %s shell input keyevent KEYCODE_HOME" % DEVICE)
+    #os.system("adb %s shell input keyevent KEYCODE_HOME" % DEVICE)
+    os.system(f"adb {DEVICE} shell input keyevent 3")
     #os.system("adb %s shell input keyevent KEYCODE_BACK" % DEVICE)
 
 ##########
@@ -63,20 +64,23 @@ for package in packages2:
 
     if (not os.path.isfile(path + package + '.apk')):
         print("Installing %s" % package)
-        os.system("adb %s shell am start -a android.intent.action.VIEW -d 'market://details?id=%s'" % (DEVICE, package))
+        #os.system("adb %s shell am start -a android.intent.action.VIEW -d 'market://details?id=%s'" % (DEVICE, package))
+        os.system(f"adb {DEVICE} shell am start -a android.intent.action.VIEW -d 'market://details?id={package}'")
         time.sleep(WAIT_TIME)
 
         coords = findGreenRectangle(screenshot(SCREENSHOT_FILENAME))
         if coords:
             print('foundit')
             x, y = coords
-            os.system("adb %s shell input tap %s %s" % (DEVICE, x, y))
+            #os.system("adb %s shell input tap %s %s" % (DEVICE, x, y))
+            os.system(f"adb {DEVICE} shell input tap {x} {y}")
             time.sleep(WAIT_TIME)
 
             coords = findGreenRectangle(screenshot(SCREENSHOT_FILENAME))
             if coords:
                 x, y = coords
-                os.system("adb %s shell input tap %s %s" % (DEVICE, x, y))
+                #os.system("adb %s shell input tap %s %s" % (DEVICE, x, y))
+                os.system(f"adb {DEVICE} shell input tap {x} {y}")
                 time.sleep(WAIT_TIME*2)
                 goBackExitEtc()
                 time.sleep(INSTALL_WAIT_TIME)
