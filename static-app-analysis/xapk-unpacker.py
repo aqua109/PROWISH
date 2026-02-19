@@ -65,6 +65,9 @@ def main():
 
                         except FileExistsError:
                             print(f'{apk_file.name} already exists. Skipping...')
+
+                        except AttributeError:
+                            print(f'Unable to rename [{apk_file}]')
                     else:
                         pass
                 else:
