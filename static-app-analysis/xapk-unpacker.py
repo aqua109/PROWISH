@@ -33,9 +33,10 @@ def unpack_xapk(xapk_path, output_path):
     try:
         with zipfile.ZipFile(xapk_path, 'r') as zip:
             zip.extractall(output_path)
+            return True
     except zipfile.BadZipFile:
         print(f'Failed to unzip [{xapk_path}] - BadZipFile')
-        pass
+        return False
 
 def get_apk_file(file_name, output_path):
     path = Path(output_path)
@@ -54,13 +55,15 @@ def main():
                 if (create_sub_folder(file.stem)):
                     output_path = f'{FILEPATH}/{file.stem}'
                     folders.append(output_path)
-                    unpack_xapk(file, output_path)
-                    apk_file = get_apk_file(file.stem, output_path)
-                    try:
-                        apk_file.rename(f'{DESTINATION}/{apk_file.name}')
+                    if (unpack_xapk(file, output_path)):
+                        apk_file = get_apk_file(file.stem, output_path)
+                        try:
+                            apk_file.rename(f'{DESTINATION}/{apk_file.name}')
 
-                    except FileExistsError:
-                        print(f'{apk_file.name} already exists. Skipping...')
+                        except FileExistsError:
+                            print(f'{apk_file.name} already exists. Skipping...')
+                    else:
+                        pass
                 else:
                     pass
             elif (file.suffix == '.apk'):
