@@ -37,6 +37,9 @@ def unpack_xapk(xapk_path, output_path):
     except zipfile.BadZipFile:
         print(f'Failed to unzip [{xapk_path}] - BadZipFile')
         return False
+    except FileNotFoundError:
+        print(f'No such file or directory [{xapk_path}]')
+        return False
 
 def get_apk_file(file_name, output_path):
     path = Path(output_path)
