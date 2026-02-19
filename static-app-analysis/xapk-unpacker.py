@@ -30,8 +30,12 @@ def delete_sub_folder(folder_path):
 
 
 def unpack_xapk(xapk_path, output_path):
-    with zipfile.ZipFile(xapk_path, 'r') as zip:
-        zip.extractall(output_path)
+    try:
+        with zipfile.ZipFile(xapk_path, 'r') as zip:
+            zip.extractall(output_path)
+    except zipfile.BadZipFile:
+        print(f'Failed to unzip [{xapk_path}] - BadZipFile')
+        pass
 
 def get_apk_file(file_name, output_path):
     path = Path(output_path)
