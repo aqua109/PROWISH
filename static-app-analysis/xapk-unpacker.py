@@ -79,9 +79,9 @@ def main():
                 except FileExistsError:
                     print(f'{apk_file.name} already exists. Skipping...')
 
-    for folder in folders:
-        print(folder)
-        delete_sub_folder(folder)
+    # for folder in folders:
+    #     print(folder)
+    #     delete_sub_folder(folder)
 
 if __name__ == '__main__':
     main()
