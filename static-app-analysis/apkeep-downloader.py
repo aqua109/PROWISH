@@ -1,8 +1,8 @@
 import subprocess
 import csv
 
-PATH = './apps-to-download.csv'
-OUTPUT = './apks'
+PATH = './apps-to-download/entertainment.csv'
+OUTPUT = './xapks'
 
 def get_package_list(csv_path):
     packages = []

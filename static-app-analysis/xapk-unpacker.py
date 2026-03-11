@@ -3,7 +3,7 @@ import shutil
 from pathlib import Path
 import zipfile
 
-FILEPATH = './xapks/apps/social'
+FILEPATH = './xapks/apps/entertainment'
 DESTINATION = './apks'
 
 def create_sub_folder(package_name):
@@ -79,9 +79,9 @@ def main():
                 except FileExistsError:
                     print(f'{apk_file.name} already exists. Skipping...')
 
-    # for folder in folders:
-    #     print(folder)
-    #     delete_sub_folder(folder)
+    for folder in folders:
+        print(folder)
+        delete_sub_folder(folder)
 
 if __name__ == '__main__':
     main()
